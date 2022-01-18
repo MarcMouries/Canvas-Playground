@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas Shapes</title>
+    <style>
+        canvas {
+            border: 1px solid grey;
+        }
+    </style>
+</head>
+
+<body>
+    <html>
+
+    <body>
+        <canvas id="canvas" width="500" height="500"></canvas>
+    </body>
+
+    </html>
+
+
+    <script id="rendered-js">
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+
+        function drawCircle(ctx) {
+            var circle = new Path2D();
+            circle.moveTo(125, 35);
+            circle.arc(100, 35, 25, 0, 2 * Math.PI);
+            ctx.stroke(circle);
+        }
+        function drawRoundedRect(ctx, x, y, width, height, radius) {
+            var rect = new Path2D();
+            rect.moveTo(x, y + radius);
+            rect.arcTo(x, y + height, x + radius, y + height, radius);
+            rect.arcTo(x + width, y + height, x + width, y + height - radius, radius);
+            rect.arcTo(x + width, y, x + width - radius, y, radius);
+            rect.arcTo(x, y, x, y + radius, radius);
+            ctx.stroke(rect);
+        }
+
+        var letter_R = new Path2D("M32,6.4c-1.4,0-2.6,0.5-3.6,1.3V6.6H25v12.9h3.5v-8.2c0.5-0.7,1.7-1.6,3.2-1.6c0.5,0,1,0.1,1.4,0.2V6.6C32.7,6.5,32.3,6.4,32,6.4");
+        ctx.fillStyle = "#293E40";
+        ctx.fill(letter_R);
+
+        ctx.strokeStyle = 'red';
+
+        drawCircle(ctx);
+
+        drawRoundedRect(ctx, 10, 10, 300, 300, 1);
+        ctx.strokeStyle = 'red';
+        drawRoundedRect(ctx, 13, 13, 294, 294, 1);
+
+        let x = 20;
+        drawRoundedRect(ctx, x, 53, 50, 33, 10);
+        drawRoundedRect(ctx, 135, 53, 50, 33, 10);
+    </script>
+</body>
+</html>
