@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang='en' class=''>
+
+<head>
+
+    <meta charset='UTF-8'>
+    <title>Points around Circle</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            _display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #eee;
+        }
+
+        .circle {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: white;
+        }
+
+        .dot {
+            position: absolute;
+            left: 100;
+            top: 100;
+            width: 16px;
+            height: 16px;
+            background: coral;
+            border-radius: 50%;
+        }
+    </style>
+
+
+<body>
+    <div class="circle"></div>
+</body>
+
+</html>
+
+
+<script>
+    const circle = document.querySelector('.circle');
+    const item_count = 4;
+    const radius = 100;
+    const cx = 100;
+    const cy = 100;
+    const TWO_PI = Math.PI * 2;
+
+    const item_angle = item_count * TWO_PI;
+
+    for (let i = 0; i < item_count; i++) {
+
+        let ratio = i / item_count;
+        let item_angle = ratio* TWO_PI;
+        let x = cx + radius * Math.sin( item_angle);
+        let y = cy + radius * Math.cos( item_angle);
+
+        const div = document.createElement('div');
+        div.classList.add('dot');
+        div.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+        circle.appendChild(div);
+    }
+
+</script>
