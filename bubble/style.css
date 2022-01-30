@@ -1,0 +1,24 @@
+/***************************
+ *	Variables
+ **************************/
+/***************************
+ *	Project Main Styles
+ **************************/
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  font-size: calc(1em + 1vw);
+  background-color: #e2e2e2;
+}
+
+/***************************
+ *	Application Main Styles
+ **************************/
