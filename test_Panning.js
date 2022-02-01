@@ -29,6 +29,13 @@ var startX, startY;
 var netPanningX = 0;
 var netPanningY = 0;
 
+/**
+ *  Stores the panning offset between the initial location and the canvas location after is has been panned
+ */
+var translatePos = { x: 0, y: 0 };
+
+var startDragOffset = { x: 0, y: 0 };
+
 // just for demo: display the accumulated panning
 const results = document.querySelector("#results");
 
@@ -50,8 +57,11 @@ renderFrame = () => {
 	ctx.clearRect(0, 0, cw, ch);
 	drawAxis();
 
+	ctx.translate(translatePos.x, translatePos.y);
+
 	ctx.beginPath();
-	ctx.arc(50 + netPanningX, 50 + netPanningY, 50, 0, 2 * Math.PI);
+	//ctx.arc(50 + netPanningX, 50 + netPanningY, 50, 0, 2 * Math.PI);
+	ctx.arc(50, 50, 50, 0, 2 * Math.PI);
 	ctx.stroke();
 };
 
@@ -77,67 +87,79 @@ function drawAxis() {
 	}
 }
 
-function handleMouseDown(e) {
+function handleMouseDown(event) {
 	// tell the browser we're handling this event
-	e.preventDefault();
-	e.stopPropagation();
+	event.preventDefault();
+	event.stopPropagation();
+
+	// get the current mouse position
+	var mouse = getMouse(event)
 
 	// calc the starting mouse X,Y for the drag
-	startX = parseInt(e.clientX - offsetX);
-	startY = parseInt(e.clientY - offsetY);
+	startX = mouse.x;
+	startY = mouse.y;
+
+	// dragging offest = current mouse - panning
+	startDragOffset.x = mouse.x - self.translatePos.x;
+	startDragOffset.y = mouse.y - self.translatePos.y;
 
 	// set the isDragging flag
 	isDown = true;
 }
 
-function handleMouseUp(e) {
+function handleMouseUp(event) {
 	// tell the browser we're handling this event
-	e.preventDefault();
-	e.stopPropagation();
+	event.preventDefault();
+	event.stopPropagation();
 
 	// clear the isDragging flag
 	isDown = false;
 }
 
-function handleMouseOut(e) {
+function handleMouseOut(event) {
 	// tell the browser we're handling this event
-	e.preventDefault();
-	e.stopPropagation();
+	event.preventDefault();
+	event.stopPropagation();
 
 	// clear the isDragging flag
 	isDown = false;
 }
 
-function handleMouseMove(e) {
+function getMouse(event) {
+	return {
+		x: event.clientX - offsetX,
+		y: event.clientY - offsetY,
+	};
+}
+
+function handleMouseMove(event) {
 	// only do this code if the mouse is being dragged
 	if (!isDown) {
 		return;
 	}
 
 	// tell the browser we're handling this event
-	e.preventDefault();
-	e.stopPropagation();
+	event.preventDefault();
+	event.stopPropagation();
 
 	// get the current mouse position
-	mouseX = parseInt(e.clientX - offsetX);
-	mouseY = parseInt(e.clientY - offsetY);
+	var mouse = getMouse(event);
 
 	// dx & dy are the distance the mouse has moved since the last mousemove event
-	var dx = mouseX - startX;
-	var dy = mouseY - startY;
+	var dx = mouse.x - startX;
+	var dy = mouse.y - startY;
+
+	translatePos.x = dx;
+	translatePos.y = dy;
 
 	// reset the vars for next mousemove
-	startX = mouseX;
-	startY = mouseY;
+	startX = mouse.x;
+	startY = mouse.y;
 
 	// accumulate the net panning done
 	netPanningX += dx;
 	netPanningY += dy;
 	results.textContent =
-		"Net change in panning: x:" +
-		netPanningX +
-		"px, y:" +
-		netPanningY +
-		"px";
+		"Change in panning: x:" + netPanningX + "px, y:" + netPanningY + "px";
 }
 render();
